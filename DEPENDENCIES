@@ -1,1 +1,4 @@
-Requires http://getfo.org/texml tested with version 1.20
+Requires
+
+http://getfo.org/texml tested with version 1.20
+xsltproc
