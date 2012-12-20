@@ -3,3 +3,4 @@ Requires
 http://getfo.org/texml tested with version 1.20
 xsltproc
 texlive-full
+libtiff-tools
