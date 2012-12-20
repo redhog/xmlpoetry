@@ -1,0 +1,109 @@
+@media all {
+ * {
+  font-family: serif;
+ }
+
+ p {
+  text-indent: 0.5cm;
+ }
+
+ p.stanca {
+  text-indent: 0cm;
+ }
+
+ p.meta {
+  margin-left: -0.5cm;
+  font-style: italic;
+ }
+
+ p.about {
+  border-top: solid;
+ }
+
+ pre {
+  font-family: monospace;
+ }
+
+ tt {
+  font-family: monospace;
+ }
+
+ div.highlights {
+  font-style: italic;
+ }
+
+ hr {
+  border-style: none;
+  background-color: #000000;
+  height: 2px;
+ }
+
+ body {
+  margin-top: 2.5cm;
+  margin-bottom: 3.0cm;
+  margin-left: 4.5cm;
+  margin-right: 2.0cm;
+  padding: 0cm;
+  max-width: 15cm;
+ }
+
+ dl {
+  margin: 0px;
+ }
+
+ div script {
+ }
+
+ div.script {
+  margin-left: 0.5cm;
+ }
+
+ div.repl {
+  text-indent: -0.5cm;
+ }
+
+ span.speaker {
+  font-variant: small-caps;
+ }
+
+ img.all {
+  clear: both;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+ }
+
+ img.left {
+  float: left;
+  clear: left;
+ }
+
+ img.right {
+  float: right;
+  clear: right;
+ }
+}
+
+@media print {
+ div.toc {
+  page-break-before: always;
+  page-break-after: always;
+ }
+
+ body {
+  margin: 0cm;
+  max-width: 100%;
+ }
+
+ div.formatlisting {
+  visibility: false;
+ }
+
+ @page {
+  size: portrait;
+  margin-top: 2.5cm;
+  margin-bottom: 3.0cm;
+  margin-left: 4.5cm;
+  margin-right: 2.0cm;
+ }
+}

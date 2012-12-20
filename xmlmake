@@ -1,0 +1,75 @@
+#! /usr/bin/make -f
+
+PROGDIR=$(patsubst %/xmlmake,%,$(filter %/xmlmake, $(MAKEFILE_LIST)))
+
+.PHONY: all
+all: $(patsubst %.xml,%.pdf,$(wildcard *.xml)) $(patsubst %.xml,%.html,$(wildcard *.xml)) $(patsubst %.lnk,%,$(wildcard *.lnk))
+
+build:
+	mkdir -p build
+
+# Deps
+
+include $(patsubst %.xml,%.mk,$(wildcard *.xml))
+
+%.mk: %.xml
+	xsltproc --stringparam filename $* $(PROGDIR)/styles/poetry.deps.xsl $< > $@
+
+# Directories
+
+%/listing.xml: %
+	( cd "$*"; \
+	  echo "<directories>"; \
+	  find . -mindepth 1 -maxdepth 1 -type d -printf "<directory>%f</directory>\n"; \
+	  echo "</directories><files>"; \
+	  find . -mindepth 1 -maxdepth 1 \! -type d -printf "<file>%f</file>\n"; \
+	  echo "</files>"; ) > "$@"
+
+# Images
+
+%.pnm: %.lnk.jpg
+	jpegtopnm $< > $@
+
+%.tiff: %.pnm
+	pnmtotiff $< > $@
+
+%.eps: %.tiff
+	tiff2ps -e -2 $< > $@
+
+
+# Texts
+
+%.texml: %.xml
+	xsltproc --stringparam filename "$*" $(PROGDIR)/styles/poetry.texml.xsl $< > $@
+
+poetry.html.css: $(PROGDIR)/styles/poetry.html.css
+	cp $< $@
+
+%.html: %.xml poetry.html.css
+	xsltproc --stringparam filename "$*" $(PROGDIR)/styles/poetry.html.xsl $< > $@
+
+
+# Output
+
+%.latex: %.texml
+	texml $< $@
+
+%.toc %.log %.aux: %.latex
+	latex $*.latex
+
+%.dvi: %.latex %.toc
+	latex $*.latex
+
+%.ps: %.dvi
+	dvips -o $*.ps $*.dvi
+
+%.pdf: %.ps
+	ps2pdf $< $@
+
+%.html: %.html.lnk
+	[ -e $@ ] || ln -s $$(cat $<) $@
+
+.PHONY: clean
+
+clean:
+	rm -rf *~ *.eps *.texml *.html *.latex *.ps *.pdf *.dvi *.aux *.log *.pnm *.tiff *.mk *.lnk.jpg *.dir poetry.html.css
